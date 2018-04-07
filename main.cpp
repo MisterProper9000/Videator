@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 
   cvNamedWindow("capture");
 
-  // ïîëó÷àåì ôàéë
+  // получаем файл
   IplImage* capture = cvLoadImage("proba1.jpg");
   assert(capture != 0);
 
@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
   vector<vector<Point> > contours;
   vector<Vec4i> hierarchy;
 
-  // ïîëó÷àåì êàäð
+  // получаем кадр
   frame = capture;
   if (!frame) break;
   cv::Mat src = cv::cvarrToMat(frame);
@@ -57,18 +57,18 @@ int main(int argc, char* argv[])
   thresh_callback(0, 0);
   IplImage* fin = cvCloneImage(&(IplImage)drawing);
 
-  // ïîêàçûâàåì
+  // показываем
   cvShowImage("capture", frame);
   cvShowImage("canny", fin);
   
 
 
   char c = cvWaitKey(1);
-  if (c == 27) { // åñëè íàæàòà ESC - âûõîäèì
+  if (c == 27) { // если нажата ESC - выходим
     break;
   }
     
-    // îñâîáîæäàåì ðåñóðñû
+    // освобождаем ресурсы
     cvReleaseImage(&capture);
     cvDestroyAllWindows();
     return 0;
@@ -85,12 +85,12 @@ void thresh_callback(int, void*)
   vector<vector<Point> > contours;
   vector<Vec4i> hierarchy;
 
-  /// Âûäåëÿåì ãðàíèöû
+  // Выделяем границы
   Canny(src_gray, canny_output, thresh, thresh * 2,3);
-  /// Íàõîäèì êîíòóðû
+  // Находим контуры
   findContours(canny_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
-  /// Ðèñóåì êîíòóðû
+  // Рисуем контуры
   drawing = Mat::zeros(canny_output.size(), CV_8UC3);
   for (int i = 0; i < contours.size(); i++)
   {
@@ -98,7 +98,7 @@ void thresh_callback(int, void*)
     drawContours(drawing, contours, i, color, 2, 8, hierarchy, 0, Point());
   }
 
-  /// Ïîêàçûâàåì ðåçóëüòàò â îêíå
+  // Показываем результат в окне
   imwrite("out.jpg", canny_output);
   namedWindow("Contours", CV_WINDOW_AUTOSIZE);
   imshow("Contours", drawing);
