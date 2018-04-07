@@ -1,5 +1,5 @@
 //
-// Программа получает видео с камеры и записывает в avi файл
+// РџСЂРѕРіСЂР°РјРјР° РїРѕР»СѓС‡Р°РµС‚ РІРёРґРµРѕ СЃ РєР°РјРµСЂС‹ Рё Р·Р°РїРёСЃС‹РІР°РµС‚ РІ avi С„Р°Р№Р»
 //
 
 #include <opencv2/core.hpp>
@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 
   cvNamedWindow("capture");
 
-  // получаем файл
+  // ГЇГ®Г«ГіГ·Г ГҐГ¬ ГґГ Г©Г«
   IplImage* capture = cvLoadImage("proba1.jpg");
   assert(capture != 0);
 
@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
   vector<vector<Point> > contours;
   vector<Vec4i> hierarchy;
 
-  // получаем кадр
+  // ГЇГ®Г«ГіГ·Г ГҐГ¬ ГЄГ Г¤Г°
   frame = capture;
   if (!frame) break;
   cv::Mat src = cv::cvarrToMat(frame);
@@ -57,18 +57,18 @@ int main(int argc, char* argv[])
   thresh_callback(0, 0);
   IplImage* fin = cvCloneImage(&(IplImage)drawing);
 
-  // показываем
+  // ГЇГ®ГЄГ Г§Г»ГўГ ГҐГ¬
   cvShowImage("capture", frame);
   cvShowImage("canny", fin);
   
 
 
   char c = cvWaitKey(1);
-  if (c == 27) { // если нажата ESC - выходим
+  if (c == 27) { // ГҐГ±Г«ГЁ Г­Г Г¦Г ГІГ  ESC - ГўГ»ГµГ®Г¤ГЁГ¬
     break;
   }
     
-    // освобождаем ресурсы
+    // Г®Г±ГўГ®ГЎГ®Г¦Г¤Г ГҐГ¬ Г°ГҐГ±ГіГ°Г±Г»
     cvReleaseImage(&capture);
     cvDestroyAllWindows();
     return 0;
@@ -85,12 +85,12 @@ void thresh_callback(int, void*)
   vector<vector<Point> > contours;
   vector<Vec4i> hierarchy;
 
-  /// Выделяем границы
+  /// Г‚Г»Г¤ГҐГ«ГїГҐГ¬ ГЈГ°Г Г­ГЁГ¶Г»
   Canny(src_gray, canny_output, thresh, thresh * 2,3);
-  /// Находим контуры
+  /// ГЌГ ГµГ®Г¤ГЁГ¬ ГЄГ®Г­ГІГіГ°Г»
   findContours(canny_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
-  /// Рисуем контуры
+  /// ГђГЁГ±ГіГҐГ¬ ГЄГ®Г­ГІГіГ°Г»
   drawing = Mat::zeros(canny_output.size(), CV_8UC3);
   for (int i = 0; i < contours.size(); i++)
   {
@@ -98,7 +98,7 @@ void thresh_callback(int, void*)
     drawContours(drawing, contours, i, color, 2, 8, hierarchy, 0, Point());
   }
 
-  /// Показываем результат в окне
+  /// ГЏГ®ГЄГ Г§Г»ГўГ ГҐГ¬ Г°ГҐГ§ГіГ«ГјГІГ ГІ Гў Г®ГЄГ­ГҐ
   imwrite("out.jpg", canny_output);
   namedWindow("Contours", CV_WINDOW_AUTOSIZE);
   imshow("Contours", drawing);
