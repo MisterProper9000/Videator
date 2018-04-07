@@ -87,10 +87,10 @@ void thresh_callback(int, void*)
 
   // Выделяем границы
   Canny(src_gray, canny_output, thresh, thresh * 2,3);
-  /// Рисуем контуры
+  /// Находим контуры
   findContours(canny_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
-  // Ðèñóåì êîíòóðû
+  // Рисуем контуры
   drawing = Mat::zeros(canny_output.size(), CV_8UC3);
   for (int i = 0; i < contours.size(); i++)
   {
