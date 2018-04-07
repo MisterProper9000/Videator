@@ -1,5 +1,5 @@
 //
-// Программа получает видео с камеры и записывает в avi файл
+// РџСЂРѕРіСЂР°РјРјР° РїРѕР»СѓС‡Р°РµС‚ РІРёРґРµРѕ СЃ РєР°РјРµСЂС‹ Рё Р·Р°РїРёСЃС‹РІР°РµС‚ РІ avi С„Р°Р№Р»
 //
 
 #include <opencv2/core.hpp>
@@ -24,8 +24,8 @@ int main(int argc, char* argv[])
 
   cvNamedWindow("capture");
 
-  // получаем файл
-  CvCapture* capture = cvCreateFileCapture("Putin.avi");
+  // РїРѕР»СѓС‡Р°РµРј С„Р°Р№Р»
+  CvCapture* capture = cvCreateFileCapture("Video.avi");
   assert(capture != 0);
 
   const char *filename = "OUT.jpg";
@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
     vector<vector<Point> > contours;
     vector<Vec4i> hierarchy;
 
-    // получаем кадр
+    // РїРѕР»СѓС‡Р°РµРј РєР°РґСЂ
     frame = cvQueryFrame(capture);
     if (!frame) break;
     cv::Mat src = cv::cvarrToMat(frame);
@@ -57,18 +57,18 @@ int main(int argc, char* argv[])
     thresh_callback(0, 0);
     IplImage* fin = cvCloneImage(&(IplImage)drawing);
 
-    // показываем
+    // РїРѕРєР°Р·С‹РІР°РµРј
     cvShowImage("capture", frame);
     cvShowImage("canny", fin);
   
 
 
     char c = cvWaitKey(1);
-    if (c == 27) { // если нажата ESC - выходим
+    if (c == 27) { // РµСЃР»Рё РЅР°Р¶Р°С‚Р° ESC - РІС‹С…РѕРґРёРј
       break;
     }
   }
-  // освобождаем ресурсы
+  // РѕСЃРІРѕР±РѕР¶РґР°РµРј СЂРµСЃСѓСЂСЃС‹
   cvReleaseCapture(&capture);
   cvDestroyAllWindows();
   return 0;
@@ -85,12 +85,12 @@ void thresh_callback(int, void*)
   vector<vector<Point> > contours;
   vector<Vec4i> hierarchy;
 
-  /// Выделяем границы
+  // Р’С‹РґРµР»СЏРµРј РіСЂР°РЅРёС†С‹
   Canny(src_gray, canny_output, thresh, thresh * 2,3);
-  /// Находим контуры
+  /// Р РёСЃСѓРµРј РєРѕРЅС‚СѓСЂС‹
   findContours(canny_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
-  /// Рисуем контуры
+  // ГђГЁГ±ГіГҐГ¬ ГЄГ®Г­ГІГіГ°Г»
   drawing = Mat::zeros(canny_output.size(), CV_8UC3);
   for (int i = 0; i < contours.size(); i++)
   {
@@ -98,7 +98,7 @@ void thresh_callback(int, void*)
     drawContours(drawing, contours, i, color, 2, 8, hierarchy, 0, Point());
   }
 
-  /// Показываем результат в окне
+  // РџРѕРєР°Р·С‹РІР°РµРј СЂРµР·СѓР»СЊС‚Р°С‚ РІ РѕРєРЅРµ
   imwrite("out.jpg", canny_output);
   namedWindow("Contours", CV_WINDOW_AUTOSIZE);
   imshow("Contours", drawing);
